@@ -5,7 +5,6 @@ DataBase::DataBase(QObject *parent)
 {
 
     dataBase = new QSqlDatabase();
-    modelTable= new QSqlTableModel(this, *dataBase);
     modelQuery= new QSqlQueryModel(this);
 }
 
@@ -21,8 +20,8 @@ DataBase::~DataBase()
  */
 void DataBase::AddDataBase(QString driver, QString nameDB)
 {
-
     *dataBase = QSqlDatabase::addDatabase(driver, nameDB);
+    modelTable= new QSqlTableModel(this, *dataBase);
 
 }
 
@@ -71,8 +70,8 @@ void DataBase::RequestToDB(QString request)
     {
         modelTable->setTable("film");
         modelTable->select();
-        modelQuery->setHeaderData(1, Qt::Horizontal, QObject::tr("Название фильма"));
-        modelQuery->setHeaderData(2, Qt::Horizontal, QObject::tr("Описание фильма"));
+        modelTable->setHeaderData(1, Qt::Horizontal, QObject::tr("Название фильма"));
+        modelTable->setHeaderData(2, Qt::Horizontal, QObject::tr("Описание фильма"));
         emit sig_SendTableFromDB(modelTable);
     }
     else
